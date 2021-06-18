@@ -1,6 +1,6 @@
 <?php
 
-namespace Mediumart\Orange\SMS\Exceptions;
+namespace Oza75\OrangeSMSChannel\Exceptions;
 
 use Exception;
 

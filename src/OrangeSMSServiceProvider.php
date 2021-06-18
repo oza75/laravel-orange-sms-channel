@@ -11,16 +11,26 @@ use Oza75\OrangeSMSChannel\Http\OrangeSMSClient as HTTPSMSClient;
 
 class OrangeSMSServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../config/config.php' => config_path('orange-sms.php'),
+            ], 'config');
+        }
+    }
 
     /**
      * Register the application services.
      */
     public function register()
     {
-        $this->app->singleton(OrangeSMSClient::class, function ($app) {
-            $credentials = $app['config']->get('services.orange.sms');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'orange-sms');
 
-            return HTTPSMSClient::getInstance($credentials['client_id'], $credentials['client_secret']);
+        $this->app->singleton(OrangeSMSClient::class, function ($app) {
+            $credentials = $app['config']->get('services.orange');
+
+            return new HTTPSMSClient($credentials['client_id'], $credentials['client_secret']);
         });
 
         $this->app->singleton(OrangeSMSBridge::class, function ($app) {

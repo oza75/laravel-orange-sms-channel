@@ -6,6 +6,7 @@ namespace Oza75\OrangeSMSChannel\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class OrangeSMSClientRequest
@@ -112,10 +113,14 @@ abstract class OrangeSMSClientRequest
      */
     protected function normalizePhoneNumber(string $phone): string
     {
-        if (substr($phone, 0, 1) !== '+') {
-            return '+' . $phone;
+        if (Str::startsWith('+', $phone)) {
+            return $phone;
         }
 
-        return $phone;
+        if ($country_code = config('orange-sms.country_code')) {
+            return $country_code . $phone;
+        }
+
+        return '+'.$phone;
     }
 }
