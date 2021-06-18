@@ -3,7 +3,6 @@
 
 namespace Oza75\OrangeSMSChannel;
 
-
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Notifications\Notification;
