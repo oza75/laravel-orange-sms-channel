@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Oza75\OrangeSMSChannel\Contracts\OrangeSMSClient as ClientContract;
 use Oza75\OrangeSMSChannel\Http\Requests\AuthorizationRequest;
 use Psr\Http\Message\StreamInterface;
+use Exception;
 
 class OrangeSMSClient implements ClientContract
 {
@@ -102,6 +103,10 @@ class OrangeSMSClient implements ClientContract
      */
     protected function configureToken(array $options): OrangeSMSClient
     {
+        if (array_key_exists('error', $options)) {
+            throw new Exception('[Orange SMS] '. $options['error_description']);
+        }
+
         if (array_key_exists('access_token', $options)) {
             $this->setToken($options['access_token']);
         }
