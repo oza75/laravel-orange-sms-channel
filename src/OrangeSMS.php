@@ -49,6 +49,7 @@ class OrangeSMS implements OrangeSMSBridge
      * Set SMS client.
      *
      * @param SMSClient $client
+     *
      * @return $this
      */
     public function setClient(SMSClient $client): OrangeSMS
@@ -62,6 +63,7 @@ class OrangeSMS implements OrangeSMSBridge
      * Set SMS recipient.
      *
      * @param string $recipientNumber
+     *
      * @return $this
      */
     public function to(string $recipientNumber): self
@@ -74,8 +76,9 @@ class OrangeSMS implements OrangeSMSBridge
     /**
      * set SMS sender details.
      *
-     * @param string $number
+     * @param string      $number
      * @param string|null $name
+     *
      * @return $this
      */
     public function from(string $number, string $name = null): self
@@ -91,6 +94,7 @@ class OrangeSMS implements OrangeSMSBridge
      * Set SMS message.
      *
      * @param string $message
+     *
      * @return $this
      */
     public function message(string $message): self
@@ -109,6 +113,8 @@ class OrangeSMS implements OrangeSMSBridge
      */
     public function send(): array
     {
+        $this->client->boot();
+
         return $this->client->executeRequest(
             new OutboundSMSRequest(
                 $this->message,

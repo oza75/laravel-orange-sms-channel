@@ -25,21 +25,31 @@ class OrangeSMSClient implements ClientContract
      * @var string
      */
     protected string $expiresIn;
+    private string $clientId;
+    private string $clientSecret;
 
     /**
      * SMSClient constructor.
-     *
-     * @throws GuzzleException
      */
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->configure($clientId, $clientSecret);
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function boot(): void
+    {
+        $this->configure($this->clientId, $this->clientSecret);
     }
 
     /**
      * Set the access token.
      *
      * @param $token
+     *
      * @return $this
      */
     public function setToken($token): self
@@ -63,6 +73,7 @@ class OrangeSMSClient implements ClientContract
      * Set the expires_in in seconds
      *
      * @param string $expiresIn
+     *
      * @return $this
      */
     public function setTokenExpiresIn(string $expiresIn): OrangeSMSClient
@@ -98,13 +109,14 @@ class OrangeSMSClient implements ClientContract
     /**
      * Configure instance using assoc array options.
      *
-     * @param  array  $options
+     * @param array $options
+     *
      * @return $this
      */
     protected function configureToken(array $options): OrangeSMSClient
     {
         if (array_key_exists('error', $options)) {
-            throw new Exception('[Orange SMS] '. $options['error_description']);
+            throw new Exception('[Orange SMS] ' . $options['error_description']);
         }
 
         if (array_key_exists('access_token', $options)) {
@@ -122,7 +134,8 @@ class OrangeSMSClient implements ClientContract
      * Execute a request against the Api server
      *
      * @param OrangeSMSClientRequest $request
-     * @param bool $decodeJson
+     * @param bool                   $decodeJson
+     *
      * @return array|StreamInterface
      * @throws GuzzleException
      */
@@ -130,8 +143,8 @@ class OrangeSMSClient implements ClientContract
     {
         $options = $request->options();
 
-        if (! isset($options['headers']["Authorization"])) {
-            $options['headers']["Authorization"] = "Bearer ". $this->getToken();
+        if (!isset($options['headers']["Authorization"])) {
+            $options['headers']["Authorization"] = "Bearer " . $this->getToken();
         }
 
         $response = $request->execute($options)->getBody();
@@ -144,6 +157,7 @@ class OrangeSMSClient implements ClientContract
      *
      * @param $clientID
      * @param $clientSecret
+     *
      * @return array
      * @throws GuzzleException
      */

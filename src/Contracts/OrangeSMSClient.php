@@ -14,7 +14,8 @@ interface OrangeSMSClient
      * Execute a request against the Api server
      *
      * @param OrangeSMSClientRequest $request
-     * @param bool $decodeJson
+     * @param bool                   $decodeJson
+     *
      * @return array|StreamInterface
      * @throws GuzzleException
      */
@@ -25,10 +26,16 @@ interface OrangeSMSClient
      *
      * @param $clientID
      * @param $clientSecret
+     *
      * @return array
      * @throws GuzzleException
      */
     public function authorize($clientID, $clientSecret): array;
+
+    /**
+     * @return void
+     */
+    public function boot(): void;
 
     /**
      * Configure the instance.

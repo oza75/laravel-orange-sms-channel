@@ -38,11 +38,12 @@ class OrangeMessage
     }
 
     /**
-     * @param string $from
+     * @param string|null $from
      * @param string|null $name
+     *
      * @return $this
      */
-    public function from(string $from, ?string $name = null): OrangeMessage
+    public function from(?string $from = null, ?string $name = null): OrangeMessage
     {
         $this->from = $from;
         $this->senderName = $name;
