@@ -45,7 +45,7 @@ class AuthorizationRequest extends OrangeSMSClientRequest
      */
     public function uri(): string
     {
-        return static::BASE_URI . '/oauth/v2/token';
+        return static::BASE_URI . '/oauth/v3/token';
     }
 
     /**
@@ -57,7 +57,9 @@ class AuthorizationRequest extends OrangeSMSClientRequest
     {
         return [
             'headers' => [
-                'Authorization' => "Basic " . base64_encode("{$this->clientID}:{$this->clientSecret}")
+                'Authorization' => "Basic " . base64_encode("{$this->clientID}:{$this->clientSecret}"),
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Accept' => 'application/json'
             ],
             'form_params' => [
                 'grant_type' => 'client_credentials'

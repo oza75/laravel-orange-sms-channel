@@ -113,7 +113,7 @@ abstract class OrangeSMSClientRequest
      */
     protected function normalizePhoneNumber(string $phone): string
     {
-        if (Str::startsWith('+', $phone)) {
+        if (Str::startsWith($phone, '+')) {
             return $phone;
         }
 
